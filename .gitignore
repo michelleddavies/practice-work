@@ -2,3 +2,5 @@
 *.zip
 hwData/A_Z Handwritten Data/A_Z Handwritten Data.csv
 hwData/A_Z Handwritten Data.csv
+graphdb/arxiv-metadata-oai-snapshot.json
+*.json
