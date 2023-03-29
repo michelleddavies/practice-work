@@ -44,9 +44,20 @@ print("Adaptive AI Accuracy:", accuracy_adaptive)
 
 # Create a line graph of the accuracy over time
 accuracy_data = [accuracy_supervised, accuracy_unsupervised, accuracy_adaptive]
-plt.plot(accuracy_data)
+# flatten accuracy_data
+accuracy_data = np.array(accuracy_data)
+print(accuracy_data)
+# Create the figure and axes
+fig, ax = plt.subplots()
+# Plot the lines
+# Add horizontal lines for constant values
+ax.plot(accuracy_adaptive, label='adaptive')
+ax.hlines(0.85, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='r', label='supervised')
+ax.hlines(0.72, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='g', label='unsupervised')
+ax.set_xticks(range(0, len(accuracy_adaptive), 100))
 plt.title('Accuracy of Spam Call Filtering Model')
-plt.xlabel('Filter Type')
+plt.xlabel('Time (ms)')
 plt.ylabel('Accuracy')
-plt.xticks([0, 1, 2], ['Supervised', 'Unsupervised', 'Adaptive'])
+# Add a legend
+ax.legend()
 plt.show()

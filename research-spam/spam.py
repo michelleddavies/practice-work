@@ -10,7 +10,7 @@ class SpamFilter:
     def __init__(self, state_space, action_space):
         self.state_space = state_space
         self.action_space = action_space
-        self.q_table = np.zeros((len(state_space), action_space.n))
+        self.q_table = np.zeros((len(state_space), action_space.n), dtype=object)
         self.alpha = 0.1
         self.gamma = 0.9
         self.epsilon = 0.1
