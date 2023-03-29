@@ -1,6 +1,11 @@
 import numpy as np
 from spam import SpamFilter
 import matplotlib.pyplot as plt
+import gym
+from gym import spaces
+
+# Define action space
+action_space = spaces.Discrete(2) # 2 possible actions (0 or 1)
 
 # Generate some random state spaces and labels (for demonstration purposes)
 num_calls = 1000
@@ -13,7 +18,7 @@ for i in range(num_calls):
     labels.append(label)
 
 # Initialize the spam filter
-filter = SpamFilter()
+filter = SpamFilter(state_spaces, action_space)
 
 # Train the filter using supervised learning
 filter.train_supervised(state_spaces, labels)
@@ -29,11 +34,12 @@ filter.train_unsupervised(state_spaces)
 accuracy_unsupervised = filter.evaluate_unsupervised(state_spaces, labels)
 print("Unsupervised Learning Accuracy:", accuracy_unsupervised)
 
-# Train the filter using adaptive AI
-filter.train_adaptive(state_spaces, labels)
+# Train the filter using the adaptive method
+transitions = filter.generate_transitions(state_spaces, labels)
+filter.train_adaptive(transitions)
 
 # Evaluate the accuracy of the adaptive AI filter
-accuracy_adaptive = filter.evaluate_adaptive(state_spaces, labels)
+accuracy_adaptive = filter.evaluate_adaptive(state_spaces)
 print("Adaptive AI Accuracy:", accuracy_adaptive)
 
 # Create a line graph of the accuracy over time
