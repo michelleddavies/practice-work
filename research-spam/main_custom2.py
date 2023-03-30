@@ -105,11 +105,22 @@ def binary_cross_entropy(y_true, y_pred):
     loss = -y_true_normalized * np.log(y_pred_normalized + epsilon) - (1 - y_true_normalized) * np.log(1 - y_pred_normalized + epsilon)
     print(loss)
     loss = np.sum(loss)
-    max_loss = -math.log(0.5) * len(y_true)
+    print(loss)
+    max_loss = -math.log(0.5) * sum(y_true) * len(y_true)
     print(max_loss)
     return loss / max_loss
 # Print the loss value
 print("Binary Cross-Entropy Loss on Avg: ", binary_cross_entropy(y_tot, y_pred))
+from sklearn.metrics import precision_score, recall_score, f1_score
+# y_true is an array of actual class labels
+# y_pred is an array of predicted class labels
+precision = precision_score(y_tot, y_pred)
+recall = recall_score(y_tot, y_pred)
+f1 = f1_score(y_tot, y_pred)
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
+print(f"F1-score: {f1:.2f}")
+
 
 
 # ## Graph accuracy
