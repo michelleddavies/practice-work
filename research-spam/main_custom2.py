@@ -71,9 +71,9 @@ for i, feature_vector in enumerate(X):
     # Reshape feature vector to a 2D array with one row
     feature_vector = feature_vector.reshape(1, -1)
     print(feature_vector, type(feature_vector[0]))
-    detector.supervised_learning(X, y_tot)
-    detector.unsupervised_learning(feature_vector)
     detector.adaptive_learning(feature_vector, y_tot)
+    detector.unsupervised_learning(feature_vector)
+    detector.supervised_learning(X, y_tot)
     preds = detector.integration(feature_vector)
     accuracy = detector.evaluate_accuracy(X, y_tot)
     accuracy_over_time.append(accuracy)
