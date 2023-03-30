@@ -48,10 +48,9 @@ class SpamCallDetector:
         # Combine predictions
         preds = np.zeros(len(X))
         for i in range(len(X)):
-            if preds_supervised[i] == 1 and preds_unsupervised[i] == self.n_clusters-1 and preds_adaptive[i] == 1:
-                preds[i] = 1
+            preds[i] = 1 if (preds_supervised[i] == 1 and preds_unsupervised[i] == self.n_clusters-1 and preds_adaptive[i] == 1).any() else 0
         return preds
-    
+
     def evaluate_accuracy(self, X, y):
         # Evaluate accuracy of supervised learning model
         preds = self.integration(X)

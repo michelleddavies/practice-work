@@ -81,23 +81,35 @@ print("My System Accuracy: ", accuracy_over_time)
 import random
 import math
 # Define the labels and predicted probabilities
-y_pred = detector.integration(X)
+y_pred = detector.integration(data)
 # Calculate binary cross-entropy loss
 def binary_cross_entropy(y_true, y_pred):
     if len(y_true) != len(y_pred):
         print("incorrect sizing, len(y_true) != len(y_pred)")
         return 1
     epsilon = 1e-10  # Small value to avoid division by zero
-    y_true_normalized = (y_true - min(y_true)) / (max(y_true) - min(y_true))
-    print(y_pred)
-    y_pred_normalized = (y_pred - min(y_pred)) / (max(y_pred) - min(y_pred))
-    loss = 0
-    for i in range(len(y_true)):
-        loss += -y_true_normalized[i] * math.log(y_pred_normalized[i] + epsilon) - (1 - y_true_normalized[i]) * math.log(1 - y_pred_normalized[i] + epsilon)
-    max_loss = len(y_true) * math.log(2)
+    def min_max_scaling(X):
+        """
+        Scale the values in X so that they fall within the range [0, 1].
+        """
+        min_vals = np.min(X, axis=0)
+        max_vals = np.max(X, axis=0)
+        if np.any(max_vals == min_vals):
+            print("error - cannot normalize")
+            return X
+        return (X - min_vals) / (max_vals - min_vals)
+    y_true_normalized = min_max_scaling(y_true)
+    y_pred_normalized = min_max_scaling(y_pred)
+    print("y_true_normalized, y_pred_normalized")
+    print(y_true_normalized, y_pred_normalized)
+    loss = -y_true_normalized * np.log(y_pred_normalized + epsilon) - (1 - y_true_normalized) * np.log(1 - y_pred_normalized + epsilon)
+    print(loss)
+    loss = np.sum(loss)
+    max_loss = -math.log(0.5) * len(y_true)
+    print(max_loss)
     return loss / max_loss
 # Print the loss value
-print("Binary Cross-Entropy Loss: ", binary_cross_entropy(y_tot, y_pred))
+print("Binary Cross-Entropy Loss on Avg: ", binary_cross_entropy(y_tot, y_pred))
 
 
 # ## Graph accuracy
