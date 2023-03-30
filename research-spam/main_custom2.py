@@ -74,33 +74,53 @@ for i, feature_vector in enumerate(X):
     detector.adaptive_learning(feature_vector, y_tot)
     detector.unsupervised_learning(feature_vector)
     detector.supervised_learning(X, y_tot)
-    preds = detector.integration(feature_vector)
     accuracy = detector.evaluate_accuracy(X, y_tot)
     accuracy_over_time.append(accuracy)
 
 print("My System Accuracy: ", accuracy_over_time)
+import random
+import math
+# Define the labels and predicted probabilities
+y_pred = detector.integration(X)
+# Calculate binary cross-entropy loss
+def binary_cross_entropy(y_true, y_pred):
+    if len(y_true) != len(y_pred):
+        print("incorrect sizing, len(y_true) != len(y_pred)")
+        return 1
+    epsilon = 1e-10  # Small value to avoid division by zero
+    y_true_normalized = (y_true - min(y_true)) / (max(y_true) - min(y_true))
+    print(y_pred)
+    y_pred_normalized = (y_pred - min(y_pred)) / (max(y_pred) - min(y_pred))
+    loss = 0
+    for i in range(len(y_true)):
+        loss += -y_true_normalized[i] * math.log(y_pred_normalized[i] + epsilon) - (1 - y_true_normalized[i]) * math.log(1 - y_pred_normalized[i] + epsilon)
+    max_loss = len(y_true) * math.log(2)
+    return loss / max_loss
+# Print the loss value
+print("Binary Cross-Entropy Loss: ", binary_cross_entropy(y_tot, y_pred))
 
-## Graph accuracy
 
-# Create the figure and axes
-fig, ax = plt.subplots()
-# Plot the lines
-# Add horizontal lines for constant values
-ax.plot(accuracy_adaptive, label='adaptive')
-ax.hlines(accuracy_supervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='r', label='supervised')
-ax.hlines(accuracy_unsupervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='g', label='unsupervised')
-ax.plot(accuracy_over_time, label='custom')
-ax.set_xticks(range(0, len(accuracy_adaptive), 100))
-plt.title('Accuracy of Spam Call Filtering Model')
-plt.xlabel('Time (ms)')
-plt.ylabel('Accuracy')
-# Add a legend
-ax.legend()
-plt.savefig('Figure_2.png')
-# Create the plot on a new graph alone
-plt.clf()
-plt.plot(accuracy_over_time)
-plt.title('Accuracy of Spam Call Filtering Model - Custom System')
-plt.xlabel('Time (ms)')
-plt.ylabel('Accuracy')
-plt.savefig('Figure_3.png')
+# ## Graph accuracy
+
+# # Create the figure and axes
+# fig, ax = plt.subplots()
+# # Plot the lines
+# # Add horizontal lines for constant values
+# ax.plot(accuracy_adaptive, label='adaptive')
+# ax.hlines(accuracy_supervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='r', label='supervised')
+# ax.hlines(accuracy_unsupervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='g', label='unsupervised')
+# ax.plot(accuracy_over_time, label='custom')
+# ax.set_xticks(range(0, len(accuracy_adaptive), 100))
+# plt.title('Accuracy of Spam Call Filtering Model')
+# plt.xlabel('Time (ms)')
+# plt.ylabel('Accuracy')
+# # Add a legend
+# ax.legend()
+# plt.savefig('Figure_2.png')
+# # Create the plot on a new graph alone
+# plt.clf()
+# plt.plot(accuracy_over_time)
+# plt.title('Accuracy of Spam Call Filtering Model - Custom System')
+# plt.xlabel('Time (ms)')
+# plt.ylabel('Accuracy')
+# plt.savefig('Figure_3.png')

@@ -45,7 +45,6 @@ class SpamCallDetector:
         preds_supervised = self.lr.predict(X)
         preds_unsupervised = self.kmeans.predict(X)
         preds_adaptive = self.dt.predict(X)
-        
         # Combine predictions
         preds = np.zeros(len(X))
         for i in range(len(X)):
@@ -55,12 +54,11 @@ class SpamCallDetector:
                 preds[i] = 1
             elif preds_adaptive[i] == 1:
                 preds[i] = 1
-        
         return preds
     
     def evaluate_accuracy(self, X, y):
         # Evaluate accuracy of supervised learning model
-        preds = self.lr.predict(X)
+        preds = self.integration(X)
         return accuracy_score(y, preds)
     
     def generate_data(self, n):
