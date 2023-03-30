@@ -66,18 +66,17 @@ print(accuracy_data)
 ## Graph accuracy
 
 # Create the figure and axes
-for i in range(1, 11):
-	fig, ax = plt.subplots()
-	# Plot the lines
-	# Add horizontal lines for constant values
-	ax.plot(accuracy_adaptive, label='adaptive')
-	ax.hlines(accuracy_supervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='r', label='supervised')
-	ax.hlines(accuracy_unsupervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='g', label='unsupervised')
-	ax.hlines(accuracy, 0, len(accuracy_adaptive)-1, colors='k', label='custom')
-	ax.set_xticks(range(0, len(accuracy_adaptive), 100))
-	plt.title('Accuracy of Spam Call Filtering Model')
-	plt.xlabel('Time (ms)')
-	plt.ylabel('Accuracy')
-	# Add a legend
-	ax.legend()
-	plt.savefig('Figure_2_{}.png'.format(i))
+fig, ax = plt.subplots()
+# Plot the lines
+# Add horizontal lines for constant values
+ax.plot(accuracy_adaptive, label='adaptive')
+ax.hlines(accuracy_supervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='r', label='supervised')
+ax.hlines(accuracy_unsupervised, 0, len(accuracy_adaptive)-1, linestyles='dashed', colors='g', label='unsupervised')
+ax.hlines(accuracy, 0, len(accuracy_adaptive)-1, colors='k', label='custom')
+ax.set_xticks(range(0, len(accuracy_adaptive), 100))
+plt.title('Accuracy of Spam Call Filtering Model')
+plt.xlabel('Time (ms)')
+plt.ylabel('Accuracy')
+# Add a legend
+ax.legend()
+plt.savefig('Figure_2.png')
