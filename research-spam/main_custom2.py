@@ -51,7 +51,7 @@ print("Generating custom system model...")
 # feature_vector - size 1x5
 # feature_matrix - size nx5, n feature_vector elements in feature_matrix
 accuracy_over_time = [] # expecting n data points in time, i.e. array of size n
-detector = SpamCallDetector(n_clusters=3)
+detector = SpamCallDetector(n_clusters=1)
 data = detector.generate_data(1000)
 X = detector.data_preprocessing(data)
 # Define the minimum and maximum values for each feature
@@ -67,19 +67,15 @@ for i, feature_vector in enumerate(X):
     if (feature_vector[0] >= a_min and feature_vector[0] <= a_max) or (feature_vector[1] >= b_min and feature_vector[1] <= b_max) or (feature_vector[2] >= c_min and feature_vector[2] <= c_max) or (feature_vector[3] >= d_min and feature_vector[3] <= d_max) or (feature_vector[4] >= e_min and feature_vector[4] <= e_max):
         y_tot[i] = 1  # set the i-th element of y_tot to 1 if the feature vector meets the threshold conditions
 print(y_tot, type(y_tot))
-detector.supervised_learning(X, y_tot)
-detector.unsupervised_learning(X)
-for feature_vector in X:
-    if (feature_vector[0] >= a_min and feature_vector[0] <= a_max) and (feature_vector[1] >= b_min and feature_vector[1] <= b_max) and (feature_vector[2] >= c_min and feature_vector[2] <= c_max) and (feature_vector[3] >= d_min and feature_vector[3] <= d_max) and (feature_vector[4] >= e_min and feature_vector[4] <= e_max):
-        y = np.array([1])  # convert y to a 1D numpy array
-    else:
-        y = np.array([0])  # convert y to a 1D numpy array of zeros
+for i, feature_vector in enumerate(X):
     # Reshape feature vector to a 2D array with one row
     feature_vector = feature_vector.reshape(1, -1)
     print(feature_vector, type(feature_vector[0]))
-    detector.adaptive_learning(feature_vector, y)
+    detector.supervised_learning(X, y_tot)
+    detector.unsupervised_learning(feature_vector)
+    detector.adaptive_learning(feature_vector, y_tot)
     preds = detector.integration(feature_vector)
-    accuracy = detector.evaluate_accuracy(feature_vector, y)
+    accuracy = detector.evaluate_accuracy(X, y_tot)
     accuracy_over_time.append(accuracy)
 
 print("My System Accuracy: ", accuracy_over_time)

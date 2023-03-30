@@ -31,7 +31,14 @@ class SpamCallDetector:
     
     def adaptive_learning(self, X, y):
         # Train adaptive learning model
-        self.dt.fit(X, y)
+        if self.dt is None:
+            self.dt = DecisionTreeClassifier(random_state=0)
+        if self.scaler is None:
+            self.scaler = StandardScaler()
+        X_scaled = self.scaler.fit_transform(X)
+        y = np.array(y).ravel().reshape(1,-1)
+        X_reshaped = X_scaled.reshape(1, -1)
+        self.dt.fit(X_reshaped, y)
     
     def integration(self, X):
         # Integrate all models
